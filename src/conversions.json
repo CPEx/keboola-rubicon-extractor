@@ -1,0 +1,443 @@
+[
+  {
+    "Label": "Account",
+    "API Column Key": "account",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Ad Class",
+    "API Column Key": "ad_class",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Ad Format",
+    "API Column Key": "ad_format",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Advertiser",
+    "API Column Key": "advertiser",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Advertiser ID",
+    "API Column Key": "advertiser_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "API Type",
+    "API Column Key": "ad_server_api_code",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "App Bundle",
+    "API Column Key": "app_bundle",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Buyer",
+    "API Column Key": "buyer",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Buyer ID",
+    "API Column Key": "buyer_seat_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Campaign",
+    "API Column Key": "campaign",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Campaign ID",
+    "API Column Key": "campaign_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Campaign Type",
+    "API Column Key": "campaign_type",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Country",
+    "API Column Key": "country",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Date",
+    "API Column Key": "date",
+    "Type": "Dimension",
+    "Value Type": "DATE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Date/Hour",
+    "API Column Key": "hour",
+    "Type": "Dimension",
+    "Value Type": "DATE/TIME",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Deal",
+    "API Column Key": "deal",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Deal Context",
+    "API Column Key": "deal_context",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Deal ID",
+    "API Column Key": "deal_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Deal Token",
+    "API Column Key": "deal_token",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Device Code",
+    "API Column Key": "device_code",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Device Type",
+    "API Column Key": "device_type",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Has Storage ID",
+    "API Column Key": "has_storage_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Partner",
+    "API Column Key": "partner",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Partner ID",
+    "API Column Key": "network_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Revenue Source",
+    "API Column Key": "revenue_source",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Secure",
+    "API Column Key": "secure",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Site",
+    "API Column Key": "site",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Site (URL)",
+    "API Column Key": "site_url",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Site ID",
+    "API Column Key": "site_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Size",
+    "API Column Key": "size",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Size ID",
+    "API Column Key": "size_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Status Code",
+    "API Column Key": "status_code",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Synthetic ID",
+    "API Column Key": "synthetic_app_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Winning RTB Rule",
+    "API Column Key": "rtb_rule",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Winning RTB Rule ID",
+    "API Column Key": "rtb_rule_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Zone",
+    "API Column Key": "zone",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
+    "Label": "Zone ID",
+    "API Column Key": "zone_id",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auction Fill Rate",
+    "API Column Key": "auction_fill_rate",
+    "Type": "Metric",
+    "Value Type": "PERCENTAGE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auction Paid Rate",
+    "API Column Key": "auction_paid_rate",
+    "Type": "Metric",
+    "Value Type": "PERCENTAGE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auction Revenue",
+    "API Column Key": "auction_revenue",
+    "Type": "Metric",
+    "Value Type": "MONEY",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auction Win Rate",
+    "API Column Key": "auction_win_rate",
+    "Type": "Metric",
+    "Value Type": "PERCENTAGE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auctions",
+    "API Column Key": "auctions",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Auctions Won",
+    "API Column Key": "auctions_won",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Avg. Bid CPM",
+    "API Column Key": "avg_bid_cpm",
+    "Type": "Metric",
+    "Value Type": "MONEY",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Bid Requests",
+    "API Column Key": "bid_requests",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Bid Responses",
+    "API Column Key": "bid_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Blocked Responses",
+    "API Column Key": "blocked_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "eCPM",
+    "API Column Key": "ecpm",
+    "Type": "Metric",
+    "Value Type": "MONEY",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Error Bid Responses",
+    "API Column Key": "error_bid_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Fill Rate",
+    "API Column Key": "fill_rate",
+    "Type": "Metric",
+    "Value Type": "PERCENTAGE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Impressions",
+    "API Column Key": "impressions",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Impressions (PSA)",
+    "API Column Key": "psa_impressions",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "No Bid Responses",
+    "API Column Key": "no_bid_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Paid Impressions",
+    "API Column Key": "paid_impression",
+    "Type": "Metric",
+    "Value Type": "FLOAT",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "rCPM",
+    "API Column Key": "rcpm",
+    "Type": "Metric",
+    "Value Type": "MONEY",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Revenue",
+    "API Column Key": "revenue",
+    "Type": "Metric",
+    "Value Type": "MONEY",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Skipped Responses",
+    "API Column Key": "skipped_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Valid Responses",
+    "API Column Key": "valid_responses",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Win Rate",
+    "API Column Key": "win_rate",
+    "Type": "Metric",
+    "Value Type": "PERCENTAGE",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Yearly",
+    "API Column Key": "year",
+    "Type": "Dimension",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Quarterly",
+    "API Column Key": "quarter",
+    "Type": "Dimension",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Monthly",
+    "API Column Key": "month",
+    "Type": "Dimension",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
+    "Label": "Weekly",
+    "API Column Key": "week",
+    "Type": "Dimension",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  }
+]

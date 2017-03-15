@@ -1,0 +1,7 @@
+{
+  "name": "rubicon-performance-analytics-api",
+  "version": "0.0.1",
+  "dependencies": {
+    "csv-write-stream": "^2.0.0"
+  }
+}
