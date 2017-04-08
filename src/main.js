@@ -57,21 +57,40 @@ function dateFormat(date, fstr, utc) {
     });
 }
 
+var params = config.parameters;
+
+var daysBack = 1;
+if(typeof params.daysBack !== 'undefined' && parseInt(params.daysBack) === params.daysBack){
+    daysBack = params.daysBack;
+    if(daysBack < 1){
+        daysBack = 1;
+    }
+}
+
+var duration = 1;
+if(typeof params.duration !== 'undefined' && parseInt(params.duration) === params.duration){
+    duration = parseInt(params.duration);
+    if(duration < 1){
+        duration = 1;
+    }
+}
 
 var from = new Date();
 from.setHours(0, 0, 0, 0);
-from.setDate(from.getDate() - 1);
+from.setDate(from.getDate() - (daysBack + duration - 1));
 var startDate = dateFormat(from, "%Y-%m-%dT%H:00:00-00:00", true);
 
 var to = new Date();
 to.setHours(23, 0, 0, 0);
-to.setDate(to.getDate() - 1);
+to.setDate(to.getDate() - daysBack );
 var endDate = dateFormat(to, "%Y-%m-%dT%H:59:59-00:00", true);
 
 var outputDate = dateFormat(to, "%Y-%m-%d", true);
 
+console.log('startDate ' + startDate);
+console.log('endDate ' + endDate);
+process.exit(1);
 
-var params = config.parameters;
 var callParams = {
     'dimensions': getColumnNamesForType((params['columnsToReturn']) ? params['columnsToReturn'] : [], 'Dimension'),
     'metrics': getColumnNamesForType((params['columnsToReturn']) ? params['columnsToReturn'] : [], 'Metric'),
