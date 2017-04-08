@@ -1,7 +1,7 @@
 #Keboola Extractor for Rubicon Project Performance Analytics API
 
 Parameters:
-```json
+```javascript
 {
     "basicAuth": "string", //required - The HTTP Basic authentication scheme ...
     "account": "string", //required - The Rubicon account ID, passed as “publisher/<accountId>”, for sample publisher/12345.
