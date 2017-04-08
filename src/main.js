@@ -89,6 +89,7 @@ var outputDate = dateFormat(to, "%Y-%m-%d", true);
 
 console.log('startDate ' + startDate);
 console.log('endDate ' + endDate);
+
 process.exit(1);
 
 var callParams = {
