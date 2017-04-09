@@ -77,24 +77,20 @@ if(typeof params.duration !== 'undefined' && parseInt(params.duration) === param
 
 var from = new Date();
 from.setHours(0, 0, 0, 0);
-from.setDate(from.getDate() - (daysBack + duration - 1));
-var startDate = dateFormat(from, "%Y-%m-%dT%H:00:00-00:00", true);
+from.setDate(from.getDate() - (daysBack + duration));
+var startDate = dateFormat(from, "%Y-%m-%dT23:00:00-00:00", false);
 
 var to = new Date();
 to.setHours(23, 0, 0, 0);
 to.setDate(to.getDate() - daysBack );
-var endDate = dateFormat(to, "%Y-%m-%dT%H:59:59-00:00", true);
+var endDate = dateFormat(to, "%Y-%m-%dT22:59:59-00:00", false);
 
-var outputDate = dateFormat(to, "%Y-%m-%d", true);
+var outputDate = dateFormat(to, "%Y-%m-%d", false);
 
-console.log('startDate ' + startDate);
-console.log('endDate ' + endDate);
-
-process.exit(1);
 
 var callParams = {
-    'dimensions': getColumnNamesForType((params['columnsToReturn']) ? params['columnsToReturn'] : [], 'Dimension'),
-    'metrics': getColumnNamesForType((params['columnsToReturn']) ? params['columnsToReturn'] : [], 'Metric'),
+    'dimensions': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Dimension'),
+    'metrics': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Metric'),
     'filters': params.filters || '',
     'account': params.account || '',
     'start': params.start || startDate,
@@ -156,8 +152,6 @@ function callRubiconDone() {
 }
 
 function callRubicon(params, callback) {
-
-    process.stdout.write(".");
 
     if (numberOfCalls >= config.parameters.simultaneousRequestsCount) {
         callBuffer.push([params, callback]);
@@ -407,7 +401,7 @@ function getColumnNamesForType(names, forType) {
     return buffer;
 }
 
-// process.stdin.resume();//so the program will not close instantly
+process.stdin.resume();//so the program will not close instantly
 
 function exitHandler(options, err) {
 
