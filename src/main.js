@@ -142,6 +142,7 @@ writer.pipe(fs.createWriteStream(pathToDataTables + 'output.csv'));
 
 var writerErrors = csvWriter({headers: ['statusCode', 'path', 'error']});
 writerErrors.pipe(fs.createWriteStream(pathToDataTables + 'errors.csv'));
+writerErrors.write({});
 
 function callRubiconDone() {
     numberOfCalls--;
