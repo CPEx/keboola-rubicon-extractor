@@ -212,11 +212,16 @@ function callRubicon(params, callback) {
     });
 
     req.on('error', function (err) {
-        handleErrorResponse({
-            'statusCode': err.statusCode || 0,
-            'error': err.message || '',
-            'path': options.path
-        });
+        if (urlWithErrors.indexOf(options.path) === -1 || parseInt(err.statusCode) === 429) {
+            callBuffer.push([params, callback]);
+            urlWithErrors.push(options.path);
+        } else {
+            handleErrorResponse({
+                'statusCode': err.statusCode || 0,
+                'error': err.message || '',
+                'path': options.path
+            });
+        }
         callRubiconDone();
     });
     req.end();
