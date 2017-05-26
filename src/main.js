@@ -196,6 +196,11 @@ function callRubicon(params, callback) {
                 });
             } else {
                 if (urlWithErrors.indexOf(options.path) === -1 || parseInt(res.statusCode) === 429) {
+
+                    if(config.parameters.simultaneousRequestsCount > 2){
+                        config.parameters.simultaneousRequestsCount --;
+                    }
+
                     callBuffer.push([params, callback]);
                     urlWithErrors.push(options.path);
                 } else {
