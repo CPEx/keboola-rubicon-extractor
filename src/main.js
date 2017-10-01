@@ -25,7 +25,7 @@ if (typeof config.parameters.url === 'undefined' || config.parameters.url === ''
 }
 
 if (typeof config.parameters.simultaneousRequestsCount === 'undefined') {
-    config.parameters.simultaneousRequestsCount = 19;
+    config.parameters.simultaneousRequestsCount = 10;
 }
 
 function dateFormat(date, fstr, utc) {
@@ -92,11 +92,11 @@ var callParams = {
     'dimensions': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Dimension'),
     'metrics': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Metric'),
     'filters': params.filters || '',
-    'account': params.account || '',
     'start': params.start || startDate,
     'end': params.end || endDate,
     'currency': params.currency || 'USD',
-    'limit': params.limit || 100000
+    'limit': params.limit || 100000,
+    'account': params.account || ''
 };
 
 
@@ -144,11 +144,25 @@ var writerErrors = csvWriter({headers: ['statusCode', 'path', 'error']});
 writerErrors.pipe(fs.createWriteStream(pathToDataTables + 'errors.csv'));
 writerErrors.write({});
 
+var writerDebug = csvWriter({headers: ['date', 'number of workers']});
+writerDebug.pipe(fs.createWriteStream(pathToDataTables + 'debug.csv'));
+
 function callRubiconDone() {
     numberOfCalls--;
     if (numberOfCalls < config.parameters.simultaneousRequestsCount && callBuffer.length > 0) {
+        writerDebug.write({
+            'date': Date.now(),
+            'number of workers': numberOfCalls
+        })
         var nextValues = callBuffer.shift();
         callRubicon(nextValues[0], nextValues[1]);
+    } else {
+        writerDebug.write({
+            'date': Date.now(),
+            'number of workers': 0
+        })
+        // no more workers are running, die with shame!
+        // process.exit(1);
     }
 }
 
@@ -170,11 +184,10 @@ function callRubicon(params, callback) {
             paramsByKey.push(key + '=' + ((util.isArray(val)) ? val.join(',') : val));
         }
     }
-
     var options = {
         host: 'api.rubiconproject.com',
         port: '443',
-        path: '/analytics/v1/report?' + paramsByKey.join('&'),
+        path: '/analytics/v1/report/?' + paramsByKey.join('&'),
         method: 'GET',
         headers: {
             'Authorization': 'Basic :' + config.parameters.basicAuth
@@ -215,7 +228,7 @@ function callRubicon(params, callback) {
             callRubiconDone();
         });
     });
-
+    req.setSocketKeepAlive(true, 0);
     req.on('error', function (err) {
         if (urlWithErrors.indexOf(options.path) === -1 || parseInt(err.statusCode) === 429) {
             callBuffer.push([params, callback]);
@@ -229,6 +242,12 @@ function callRubicon(params, callback) {
         }
         callRubiconDone();
     });
+    req.on('timeout', function(err) {
+        writerDebug.write({
+            'date': Date.now(),
+            'number of workers': 'Timeout!!'
+        })
+    })
     req.end();
 }
 
