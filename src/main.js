@@ -360,8 +360,7 @@ function handleResponse() {
                 fs.fsyncSync(streamFD);
                 console.log("waiting");
                 // fuck this, docker just ignores all "wait for buffer to finish flushing" so fuck you, here's sleep!
-                setTimeout(outputStream.end(), 90000);
-                console.log("finished waiting");
+                setTimeout(() => {outputStream.end()}, 140000);
             }
         } catch (e) {
             handleErrorResponse({
