@@ -1,33 +1,22 @@
+// Set path - where to store csv file.
+
 var pathToData = './../data/';
 var pathToDataTables = pathToData + 'out/tables/';
 
+// Require all the packages we need, die in case we don't have all we need
 try {
-    var querystring = require('querystring');
     var https = require('https');
     var fs = require('fs');
-    const path = require('path');
     var conversions = require('./conversions.json');
     var config = require(pathToData + 'config.json');
     var util = require('util');
-    var csvWriter = require('csv-write-stream');
+    var outputStream = fs.createWriteStream(pathToDataTables + 'output.csv');
 } catch (e) {
     console.log(e);
     process.exit(1);
 }
 
-if (typeof config.parameters === 'undefined') {
-    console.log('Missing configuration');
-    process.exit(1);
-}
-
-if (typeof config.parameters.url === 'undefined' || config.parameters.url === '') {
-    config.parameters.url = "https://api.rubiconproject.com/analytics/v/report";
-}
-
-if (typeof config.parameters.simultaneousRequestsCount === 'undefined') {
-    config.parameters.simultaneousRequestsCount = 10;
-}
-
+// helper function - format/parse date for use in request query params
 function dateFormat(date, fstr, utc) {
     utc = utc ? 'getUTC' : 'get';
     return fstr.replace(/%[YmdHMS]/g, function (m) {
@@ -57,20 +46,34 @@ function dateFormat(date, fstr, utc) {
     });
 }
 
+// Parse config file and setup all the settings for requests
+if (typeof config.parameters === 'undefined') {
+    console.log('Missing configuration');
+    process.exit(1);
+}
+
+if (typeof config.parameters.url === 'undefined' || config.parameters.url === '') {
+    config.parameters.url = "https://api.rubiconproject.com/analytics/v/report";
+}
+
+if (typeof config.parameters.simultaneousRequestsCount === 'undefined') {
+    config.parameters.simultaneousRequestsCount = 10;
+}
+
 var params = config.parameters;
 
 var daysBack = 1;
-if(typeof params.daysBack !== 'undefined' && parseInt(params.daysBack) === params.daysBack){
+if (typeof params.daysBack !== 'undefined' && parseInt(params.daysBack) === params.daysBack) {
     daysBack = params.daysBack;
-    if(daysBack < 1){
+    if (daysBack < 1) {
         daysBack = 1;
     }
 }
 
 var duration = 1;
-if(typeof params.duration !== 'undefined' && parseInt(params.duration) === params.duration){
+if (typeof params.duration !== 'undefined' && parseInt(params.duration) === params.duration) {
     duration = parseInt(params.duration);
-    if(duration < 1){
+    if (duration < 1) {
         duration = 1;
     }
 }
@@ -82,12 +85,12 @@ var startDate = dateFormat(from, "%Y-%m-%dT23:00:00-00:00", false);
 
 var to = new Date();
 to.setHours(23, 0, 0, 0);
-to.setDate(to.getDate() - daysBack );
+to.setDate(to.getDate() - daysBack);
 var endDate = dateFormat(to, "%Y-%m-%dT22:59:59-00:00", false);
 
 var outputDate = dateFormat(to, "%Y-%m-%d", false);
 
-
+// Params for the API request
 var callParams = {
     'dimensions': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Dimension'),
     'metrics': getColumnNamesForType((params['requestedColumns']) ? params['requestedColumns'] : [], 'Metric'),
@@ -99,7 +102,7 @@ var callParams = {
     'account': params.account || ''
 };
 
-
+// basic checks for config and seting up defaults
 if (callParams.account === '') {
     console.log('Missing account value.');
     process.exit(1);
@@ -129,40 +132,26 @@ if (!params.onlyDimensionOutput) {
     callParams.metrics = ['auctions'];
 }
 
+// set number of concurent calls, buffer and err array
 var numberOfCalls = 0;
 var callBuffer = [];
 var urlWithErrors = [];
 
+// Create header for our csv
 var csvHeader = getColumnNamesForType(params['requestedColumns'], (params.onlyDimensionOutput) ? 'Dimension' : undefined);
 if (params.addDateToOutput) {
     csvHeader.unshift('date');
 }
-var writer = csvWriter({headers: csvHeader});
-writer.pipe(fs.createWriteStream(pathToDataTables + 'output.csv'));
 
-var writerErrors = csvWriter({headers: ['statusCode', 'path', 'error']});
-writerErrors.pipe(fs.createWriteStream(pathToDataTables + 'errors.csv'));
-writerErrors.write({});
-
-var writerDebug = csvWriter({headers: ['date', 'number of workers']});
-writerDebug.pipe(fs.createWriteStream(pathToDataTables + 'debug.csv'));
+// Write header to our csv file
+outputStream.write(csvHeader.join());
+outputStream.write('\n');
 
 function callRubiconDone() {
     numberOfCalls--;
     if (numberOfCalls < config.parameters.simultaneousRequestsCount && callBuffer.length > 0) {
-        writerDebug.write({
-            'date': Date.now(),
-            'number of workers': numberOfCalls
-        })
         var nextValues = callBuffer.shift();
         callRubicon(nextValues[0], nextValues[1]);
-    } else {
-        writerDebug.write({
-            'date': Date.now(),
-            'number of workers': 0
-        })
-        // no more workers are running, die with shame!
-        // process.exit(1);
     }
 }
 
@@ -193,7 +182,6 @@ function callRubicon(params, callback) {
             'Authorization': 'Basic :' + config.parameters.basicAuth
         }
     };
-
     var req = https.request(options, function (res) {
         var output = '';
         res.setEncoding('utf8');
@@ -210,8 +198,8 @@ function callRubicon(params, callback) {
             } else {
                 if (urlWithErrors.indexOf(options.path) === -1 || parseInt(res.statusCode) === 429) {
 
-                    if(config.parameters.simultaneousRequestsCount > 2){
-                        config.parameters.simultaneousRequestsCount --;
+                    if (config.parameters.simultaneousRequestsCount > 2) {
+                        config.parameters.simultaneousRequestsCount--;
                     }
 
                     callBuffer.push([params, callback]);
@@ -242,12 +230,6 @@ function callRubicon(params, callback) {
         }
         callRubiconDone();
     });
-    req.on('timeout', function(err) {
-        writerDebug.write({
-            'date': Date.now(),
-            'number of workers': 'Timeout!!'
-        })
-    })
     req.end();
 }
 
@@ -289,12 +271,6 @@ function handleErrorResponse(errorResponse) {
             return;
         }
     }
-
-    writerErrors.write({
-        'statusCode': errorResponse.statusCode || '',
-        'error': errorResponse.error || '',
-        'path': errorResponse.path || ''
-    })
 }
 
 function handleResponse() {
@@ -351,10 +327,20 @@ function handleResponse() {
                             if (typeof config.parameters.preSaveFilter !== 'undefined'
                                 && config.parameters.preSaveFilter.length > 0) {
                                 if (preSaveFilter(items[i])) {
-                                    writer.write(items[i]);
+                                    var tmpData = [];
+                                    for (var j of csvHeader) {
+                                        tmpData.push(items[i][j])
+                                    }
+                                    tmpData.push('\n');
+                                    outputStream.write(tmpData.join());
                                 }
                             } else {
-                                writer.write(items[i]);
+                                var tmpData = [];
+                                for (var j of csvHeader) {
+                                    tmpData.push(items[i][j])
+                                }
+                                tmpData.push('\n');
+                                outputStream.write(tmpData.join());
                             }
                         }
                     }
@@ -365,6 +351,10 @@ function handleResponse() {
                     'error': 'no items',
                     'path': data.path
                 });
+            }
+            if (callBuffer.length === 0) {
+                // no more workers are running, die with shame!
+                outputStream.end();
             }
         } catch (e) {
             handleErrorResponse({
@@ -389,7 +379,7 @@ function preSaveFilter(item) {
                 }
                 column = getColumnNamesForType([columns[i].replace(/#/g, '')])[0];
                 re = new RegExp(columns[i], "g");
-                if(typeof item[column] !== 'undefined') {
+                if (typeof item[column] !== 'undefined') {
                     filter = filter.replace(re, item[column]);
                 }
             }
@@ -431,6 +421,11 @@ function getColumnNamesForType(names, forType) {
     return buffer;
 }
 
+outputStream.on('finish', function () {
+    console.log("finished writing output");
+    process.exit(1);
+});
+
 process.stdin.resume();//so the program will not close instantly
 
 function exitHandler(options, err) {
@@ -439,18 +434,16 @@ function exitHandler(options, err) {
     if (err) console.log(err.stack);
     if (options.exit) process.exit(0);
 
-    writer.end();
-    writerErrors.end();
     process.exit(0);
 }
 
 //do something when app is closing
-process.on('exit', exitHandler.bind(null, {cleanup: true}));
+process.on('exit', exitHandler.bind(null, { cleanup: true }));
 
 //catches ctrl+c event
-process.on('SIGINT', exitHandler.bind(null, {exit: true}));
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
 
 //catches uncaught exceptions
-process.on('uncaughtException', exitHandler.bind(null, {exit: true}));
+process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 rubiconCaller();
