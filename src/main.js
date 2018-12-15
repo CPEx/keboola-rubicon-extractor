@@ -358,8 +358,10 @@ function handleResponse() {
                 // no more workers are running, die with shame!
                 console.log(streamFD);
                 fs.fsyncSync(streamFD);
+                console.log("waiting");
                 // fuck this, docker just ignores all "wait for buffer to finish flushing" so fuck you, here's sleep!
                 setTimeout(outputStream.end(), 90000);
+                console.log("finished waiting");
             }
         } catch (e) {
             handleErrorResponse({
