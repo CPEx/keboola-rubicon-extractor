@@ -331,16 +331,14 @@ function handleResponse() {
                                     for (var j of csvHeader) {
                                         tmpData.push(items[i][j])
                                     }
-                                    tmpData.push('\n');
-                                    outputStream.write(tmpData.join());
+                                    outputStream.write(`${tmpData.join()}\n`);
                                 }
                             } else {
                                 var tmpData = [];
                                 for (var j of csvHeader) {
                                     tmpData.push(items[i][j])
                                 }
-                                tmpData.push('\n');
-                                outputStream.write(tmpData.join());
+                                outputStream.write(`${tmpData.join()}\n`);
                             }
                         }
                     }
