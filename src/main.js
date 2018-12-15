@@ -11,6 +11,8 @@ try {
     var config = require(pathToData + 'config.json');
     var util = require('util');
     var outputStream = fs.createWriteStream(pathToDataTables + 'output.csv');
+    var streamFD = 0;
+    var allCounter = 0;
 } catch (e) {
     console.log(e);
     process.exit(1);
@@ -332,6 +334,7 @@ function handleResponse() {
                                         tmpData.push(items[i][j])
                                     }
                                     outputStream.write(`${tmpData.join()}\n`);
+                                    allCounter++;
                                 }
                             } else {
                                 var tmpData = [];
@@ -339,6 +342,7 @@ function handleResponse() {
                                     tmpData.push(items[i][j])
                                 }
                                 outputStream.write(`${tmpData.join()}\n`);
+                                allCounter++;
                             }
                         }
                     }
@@ -352,6 +356,8 @@ function handleResponse() {
             }
             if (callBuffer.length === 0) {
                 // no more workers are running, die with shame!
+                console.log(streamFD);
+                fs.fsyncSync(streamFD);
                 outputStream.end();
             }
         } catch (e) {
@@ -418,11 +424,15 @@ function getColumnNamesForType(names, forType) {
     }
     return buffer;
 }
-
 outputStream.on('finish', function () {
     console.log("finished writing output");
+    console.log(allCounter);
     process.exit(1);
 });
+
+outputStream.on('open', function (fd) {
+    streamFD = fd;
+})
 
 process.stdin.resume();//so the program will not close instantly
 
