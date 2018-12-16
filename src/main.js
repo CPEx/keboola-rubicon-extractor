@@ -331,17 +331,19 @@ function handleResponse() {
                                 if (preSaveFilter(items[i])) {
                                     var tmpData = [];
                                     for (var j of csvHeader) {
-                                        tmpData.push(items[i][j])
+                                        tmpData.push(items[i][j].replace(/"/g, "'"))
                                     }
-                                    outputStream.write(`${tmpData.join()}\n`);
+                                    tmpData = tmpData.map(d => `"${d}"`).join(',');
+                                    outputStream.write(`${tmpData}\n`);
                                     allCounter++;
                                 }
                             } else {
                                 var tmpData = [];
                                 for (var j of csvHeader) {
-                                    tmpData.push(items[i][j])
+                                    tmpData.push(items[i][j].replace(/"/g, "'"))
                                 }
-                                outputStream.write(`${tmpData.join()}\n`);
+                                tmpData = tmpData.map(d => `"${d}"`).join(',');
+                                outputStream.write(`${tmpData}\n`);
                                 allCounter++;
                             }
                         }
@@ -356,11 +358,8 @@ function handleResponse() {
             }
             if (callBuffer.length === 0) {
                 // no more workers are running, die with shame!
-                console.log(streamFD);
                 fs.fsyncSync(streamFD);
-                console.log("waiting");
-                // fuck this, docker just ignores all "wait for buffer to finish flushing" so fuck you, here's sleep!
-                setTimeout(() => {outputStream.end()}, 140000);
+                outputStream.end()
             }
         } catch (e) {
             handleErrorResponse({
