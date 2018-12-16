@@ -232,6 +232,10 @@ function callRubicon(params, callback) {
         }
         callRubiconDone();
     });
+    req.on("timeout", function(err) {
+        console.log(err);
+        console.log("timeouted");
+    })
     req.end();
 }
 
@@ -273,6 +277,8 @@ function handleErrorResponse(errorResponse) {
             return;
         }
     }
+    console.log('err occured');
+    console.log(errorResponse);
 }
 
 function handleResponse() {
@@ -284,7 +290,6 @@ function handleResponse() {
         filters = arguments[1];
         data = arguments[2];
     }
-
     if (typeof data['result'] !== 'undefined') {
 
         try {
@@ -331,7 +336,11 @@ function handleResponse() {
                                 if (preSaveFilter(items[i])) {
                                     var tmpData = [];
                                     for (var j of csvHeader) {
-                                        tmpData.push(items[i][j].replace(/"/g, "'"))
+                                        if (typeof items[i][j] === 'string') {
+                                            tmpData.push(items[i][j].replace(/"/g, "'"))
+                                        } else {
+                                            tmpData.push(items[i][j])
+                                        }
                                     }
                                     tmpData = tmpData.map(d => `"${d}"`).join(',');
                                     outputStream.write(`${tmpData}\n`);
@@ -340,7 +349,11 @@ function handleResponse() {
                             } else {
                                 var tmpData = [];
                                 for (var j of csvHeader) {
-                                    tmpData.push(items[i][j].replace(/"/g, "'"))
+                                    if (typeof items[i][j] === 'string') {
+                                        tmpData.push(items[i][j].replace(/"/g, "'"))
+                                    } else {
+                                        tmpData.push(items[i][j])
+                                    }
                                 }
                                 tmpData = tmpData.map(d => `"${d}"`).join(',');
                                 outputStream.write(`${tmpData}\n`);
