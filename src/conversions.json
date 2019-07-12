@@ -140,6 +140,13 @@
     "Filterable?": "Yes"
   },
   {
+    "Label": "Device Type Name",
+    "API Column Key": "device_type_name",
+    "Type": "Dimension",
+    "Value Type": "STRING",
+    "Filterable?": "Yes"
+  },
+  {
     "Label": "Device Type",
     "API Column Key": "device_type",
     "Type": "Dimension",
