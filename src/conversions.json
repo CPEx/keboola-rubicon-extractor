@@ -119,6 +119,13 @@
     "Filterable?": "No"
   },
   {
+    "Label": "Ad Requests",
+    "API Column Key": "ad_requests",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
     "Label": "Deal ID",
     "API Column Key": "deal_id",
     "Type": "Dimension",
