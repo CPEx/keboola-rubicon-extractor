@@ -126,6 +126,13 @@
     "Filterable?": "No"
   },
   {
+    "Label": "Unique Visitors",
+    "API Column Key": "unique_visitors",
+    "Type": "Metric",
+    "Value Type": "INTEGER",
+    "Filterable?": "No"
+  },
+  {
     "Label": "Deal ID",
     "API Column Key": "deal_id",
     "Type": "Dimension",
