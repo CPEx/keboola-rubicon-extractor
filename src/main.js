@@ -103,7 +103,9 @@ var callParams = {
     'limit': params.limit || 100000,
     'account': params.account || ''
 };
-
+if (config.parameters.addDateToOutput) {
+    outputDate = callParams.end.split("T")[0];
+}
 // basic checks for config and seting up defaults
 if (callParams.account === '') {
     console.log('Missing account value.');
